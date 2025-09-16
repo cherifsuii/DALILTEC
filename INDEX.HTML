@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Dalil Technologies — Domain-trained AI for Universities & Public Agencies</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Dalil Technologies builds domain-trained AI assistants for universities and public agencies in Algeria. Bilingual (AR/FR/EN), on-prem options, cost-controlled, with RAG, structured prompting, and fine-tuning." />
+  <meta property="og:title" content="Dalil Technologies — Domain-trained AI for Universities & Public Agencies" />
+  <meta property="og:description" content="Bilingual AI assistants for guidance, document automation, and knowledge search. On‑prem, secure, cost‑controlled." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://dalil-tech-og.vercel.app/api/og" />
+  <meta name="theme-color" content="#111317" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #111317;
+      --surface: #1a1d23;
+      --surface-border: rgba(255, 255, 255, 0.07);
+      --primary: #6366f1; /* Indigo */
+      --primary-glow: rgba(99, 102, 241, 0.3);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --radius: 12px;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      color: var(--text);
+      background-color: var(--bg);
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: var(--primary); text-decoration: none; transition: color .2s; }
+    a:hover { color: #8183f3; }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+    /* Navbar */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      backdrop-filter: saturate(180%) blur(10px);
+      background: rgba(17, 19, 23, 0.5);
+      border-bottom: 1px solid var(--surface-border);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-text { font-weight: 700; font-size: 18px; letter-spacing: -.5px; color: var(--text); }
+    .nav-links { display: none; }
+    @media (min-width: 1024px) {
+      .nav-links { display: flex; align-items: center; gap: 1rem; }
+    }
+    .nav-links a { padding: 8px 12px; color: var(--muted); border-radius: 8px; transition: .2s; font-weight: 500; }
+    .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, .05); }
+    .cta {
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+      padding: 12px 20px;
+      border-radius: 8px;
+      transition: all .2s;
+      box-shadow: 0 0 0 0 var(--primary-glow);
+    }
+    .cta:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -5px var(--primary-glow); }
+
+    /* Hero */
+    .hero {
+      padding: 180px 0 120px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(circle, var(--primary-glow), transparent 70%);
+      filter: blur(80px);
+      z-index: -1;
+    }
+    .hero-content { max-width: 800px; margin: 0 auto; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .badge span { color: var(--primary); }
+    .title {
+      font-size: clamp(2.8rem, 6vw, 4rem);
+      line-height: 1.1;
+      margin: 24px 0 16px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      background: linear-gradient(180deg, #fff, #9ca3af);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .subtitle { color: var(--muted); font-size: 1.125rem; line-height: 1.7; max-width: 700px; margin: 0 auto 32px; }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--surface-border);
+      padding: 12px 20px;
+      border-radius: 8px;
+      transition: .2s;
+      font-weight: 600;
+    }
+    .btn:hover { background: #2c313a; border-color: rgba(255,255,255,.15); }
+
+    /* Sections */
+    section { padding: 80px 0; }
+    .section-title { font-size: 2.5rem; font-weight: 800; margin: 0 0 16px; text-align: center; letter-spacing: -1.5px; }
+    .section-sub { color: var(--muted); margin-bottom: 64px; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+    .grid { display: grid; gap: 24px; }
+    .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: all .3s ease;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      padding: 1px;
+      background: linear-gradient(135deg, var(--primary), #a855f7);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity .3s ease;
+      pointer-events: none;
+    }
+    .card:hover { transform: translateY(-5px); background: #1f2228; }
+    .card:hover::before { opacity: 1; }
+    .card .icon {
+      width: 48px; height: 48px;
+      border-radius: 8px;
+      background: rgba(99, 102, 241, 0.1);
+      display: grid; place-items: center;
+      margin-bottom: 16px;
+      color: var(--primary);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+    .card h3 { margin: 0 0 8px; font-size: 1.125rem; font-weight: 600; color: var(--text); }
+    .card p { color: var(--muted); margin: 0; line-height: 1.6; }
+    
+    .chip-container { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      font-family: var(--font-mono);
+      display: inline-block; padding: 4px 10px; border-radius: 6px;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid var(--surface-border);
+      color: var(--muted); font-size: 12px; font-weight: 500;
+    }
+    .links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+    .links a { font-weight: 600; }
+
+    /* Founder Card */
+    .founder-card { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+    @media (min-width: 768px) { .founder-card { flex-direction: row; align-items: center; } }
+    .founder-card img {
+      width: 120px; height: 120px;
+      border-radius: 50%; object-fit: cover;
+      border: 2px solid var(--surface-border);
+      flex-shrink: 0;
+    }
+    .founder-card h3 { font-size: 1.5rem; letter-spacing: -0.5px; }
+
+    /* Stats Section */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 60px;
+    }
+    
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: center;
+      transition: all .3s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+    }
+    
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      color: var(--muted);
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    /* Contact Block */
+    .contact-block {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px; padding: 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-block::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    /* Footer */
+    footer { padding: 32px 0; color: var(--muted); border-top: 1px solid var(--surface-border); }
+    footer .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+    /* Reveal animations */
+    [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    [data-reveal].visible { opacity: 1; transform: none; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .grid.cols-3 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
+      .section-title { font-size: 2rem; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions a { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#home" class="brand">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="#6366f1" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M2 7L12 12L22 7" stroke="#e5e7eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 12V22" stroke="#e5e7eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="brand-text">Dalil Technologies</div>
+      </a>
+      <div class="nav-links">
+        <a href="#products">Products</a>
+        <a href="#features">Features</a>
+        <a href="#why">Why Dalil</a>
+        <a href="#founder">Founder</a>
+        <a class="cta" href="#contact">Request a pilot</a>
+      </div>
+    </div>
+  </nav>
+
+  <header id="home" class="hero">
+    <div class="container hero-content">
+      <div class="badge" data-reveal>
+        <span>●</span>
+        <div>Bilingual, on‑prem, domain‑trained</div>
+      </div>
+      <h1 class="title" data-reveal>
+        AI Assistants for Universities & Public Agencies in Algeria
+      </h1>
+      <p class="subtitle" data-reveal>
+        Guidance, document automation, and knowledge search — powered by RAG, structured prompting, and fine‑tuning. Local‑first, with strict data governance and predictable costs.
+      </p>
+      <div class="hero-actions" data-reveal>
+        <a class="cta" href="#products">View products</a>
+        <a class="btn" href="https://github.com/cherifsuii/dibvsdms" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <a class="btn" href="https://dibvsdms.vercel.app/" target="_blank" rel="noopener">
+          <i class="fas fa-external-link-alt"></i> Live Demo
+        </a>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat-card" data-reveal>
+          <div class="stat-value">4th</div>
+          <p class="stat-label">National University Competition</p>
+        </div>
+        <div class="stat-card" data-reveal>
+          <div class="stat-value">3</div>
+          <p class="stat-label">Core Techniques: Prompting · RAG · Fine-tuning</p>
+        </div>
+        <div class="stat-card" data-reveal>
+          <div class="stat-value">AR/FR</div>
+          <p class="stat-label">Bilingual Support</p>
+        </div>
+        <div class="stat-card" data-reveal>
+          <div class="stat-value">On‑prem</div>
+          <p class="stat-label">Offline/Local Model Options</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="products">
+      <div class="container">
+        <h2 class="section-title">Product Suite</h2>
+        <p class="section-sub">
+          Purpose‑built assistants for the public sector. Domain‑trained, auditable, and cost‑controlled.
+        </p>
+        <div class="grid cols-3">
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </div>
+            <h3>ENSTP Guidance</h3>
+            <p>Structured prompting + curated dataset for transparent, bilingual recommendations with confidence scores.</p>
+            <div class="chip-container">
+              <span class="chip">Prompting</span>
+              <span class="chip">Gemini</span>
+              <span class="chip">Bilingual</span>
+            </div>
+            <div class="links">
+              <a href="https://dibvsdms.vercel.app/" target="_blank" rel="noopener">
+                <i class="fas fa-external-link-alt"></i> Live Demo
+              </a>
+              <a href="https://github.com/cherifsuii/dibvsdms" target="_blank" rel="noopener">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+            </div>
+          </div>
+          
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h3>RAG Academic Advisor</h3>
+            <p>Retrieval-Augmented answers with citations over official documents and a 100-item psychometric test.</p>
+            <div class="chip-container">
+              <span class="chip">RAG</span>
+              <span class="chip">Chroma/FAISS</span>
+              <span class="chip">E5-small</span>
+            </div>
+            <div class="links">
+              <a href="https://huggingface.co/spaces/cheriftassii/enstp-academic-advisor" target="_blank" rel="noopener">
+                <i class="fas fa-rocket"></i> HF Space
+              </a>
+              <a href="https://huggingface.co/datasets/cheriftassii/enstp-qa-dataset" target="_blank" rel="noopener">
+                <i class="fas fa-database"></i> Dataset
+              </a>
+            </div>
+          </div>
+          
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+              </svg>
+            </div>
+            <h3>Fine‑tuned Local Model</h3>
+            <p>A lightweight, experimental model for ENSTP guidance. CPU-friendly with Ollama/llama.cpp.</p>
+            <div class="chip-container">
+              <span class="chip">Fine-tuning</span>
+              <span class="chip">Gemma</span>
+              <span class="chip">Ollama</span>
+            </div>
+            <div class="links">
+              <a href="https://huggingface.co/spaces/cheriftassii/enstp-ai-advisor" target="_blank" rel="noopener">
+                <i class="fas fa-flask"></i> Experimental
+              </a>
+            </div>
+          </div>
+          
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
+            <h3>OCR & Forms Automation</h3>
+            <p>Extract data from invoices, admissions files, HR documents with human-in-the-loop validation.</p>
+            <div class="chip-container">
+              <span class="chip">OCR</span>
+              <span class="chip">Validation UI</span>
+              <span class="chip">Exports</span>
+            </div>
+          </div>
+          
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+            </div>
+            <h3>Knowledge Portal & Search</h3>
+            <p>Semantic search over regulations, procedures, and internal memos with citations and versioning.</p>
+            <div class="chip-container">
+              <span class="chip">RAG</span>
+              <span class="chip">Audit</span>
+              <span class="chip">AR/FR</span>
+            </div>
+          </div>
+          
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+            </div>
+            <h3>Algeria Intel Agent</h3>
+            <p>A research helper that surfaces startups and topics in Algeria with faster discovery.</p>
+            <div class="chip-container">
+              <span class="chip">Discovery</span>
+              <span class="chip">Research</span>
+            </div>
+            <div class="links">
+              <a href="https://algeriaintelagent-3.vercel.app/" target="_blank" rel="noopener">
+                <i class="fas fa-external-link-alt"></i> Visit
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" style="background: rgba(0,0,0,0.2);">
+      <div class="container">
+        <h2 class="section-title">Key Features</h2>
+        <p class="section-sub">
+          Designed for the realities of public institutions: security, language, and cost control.
+        </p>
+        <div class="grid cols-3">
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <h3>Data Governance</h3>
+            <p>On‑prem and private cloud options. Full audit logs, data provenance, and versioned knowledge.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="6"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+              </svg>
+            </div>
+            <h3>Accuracy & Transparency</h3>
+            <p>RAG with citations, structured prompts, and optional fine‑tuning for clear, auditable rationales.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <h3>Bilingual by Design</h3>
+            <p>Terminology aligned to academic and public-sector language in both Arabic and French.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+              </svg>
+            </div>
+            <h3>Cost Control</h3>
+            <p>Lightweight local models by default; API fallback only when needed. CPU-friendly deployments.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <h3>Modular Architecture</h3>
+            <p>Guidance, OCR, knowledge portals, and admissions Q&A. Start small, scale to ministry level.</p>
+          </div>
+          <div class="card" data-reveal>
+            <div class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h3>Proven Prototype</h3>
+            <p>ENSTP guidance ranked 4th nationally. Live demos and datasets available.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="container">
+        <h2 class="section-title">Why Choose Dalil Technologies?</h2>
+        <p class="section-sub">
+          Built specifically for the challenges faced by Algerian public institutions.
+        </p>
+        <div class="grid cols-2">
+          <div class="card" data-reveal>
+            <h3>Local Expertise</h3>
+            <p>Deep understanding of Algerian educational systems and public sector requirements ensures solutions are culturally and contextually appropriate.</p>
+          </div>
+          <div class="card" data-reveal>
+            <h3>Security First</h3>
+            <p>All solutions prioritize data sovereignty with on-prem deployment options and strict compliance with Algerian data protection regulations.</p>
+          </div>
+          <div class="card" data-reveal>
+            <h3>Cost Efficiency</h3>
+            <p>Predictable pricing models designed for public sector budgets with no hidden costs or vendor lock-in.</p>
+          </div>
+          <div class="card" data-reveal>
+            <h3>Continuous Innovation</h3>
+            <p>Active research and development pipeline ensuring our solutions stay ahead of emerging technologies and educational needs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="founder">
+      <div class="container">
+        <h2 class="section-title">Founder</h2>
+        <div class="card" data-reveal>
+          <div class="founder-card">
+            <img src="https://v3.fal.media/files/tiger/tDZLgN1AEWiwK4Dj05-T4_f05e86f1c78745a68c7c88de1232850c.png" alt="Founder portrait">
+            <div>
+              <h3>Cherif Tas</h3>
+              <p style="color: var(--muted)">
+                AI enthusiast and founder of Dalil Technologies. Built the ENSTP Guidance prototype, achieving 4th place in a national university competition. Focused on practical, reliable GovTech for education using structured prompting, RAG, and fine‑tuning.
+              </p>
+              <div class="links">
+                <a href="https://myportfoliocheriftas.vercel.app/" target="_blank" rel="noopener">
+                  <i class="fas fa-user"></i> Portfolio
+                </a>
+                <a href="https://github.com/cherifsuii/dibvsdms" target="_blank" rel="noopener">
+                  <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="https://huggingface.co/spaces/cheriftassii/enstp-academic-advisor" target="_blank" rel="noopener">
+                  <i class="fas fa-rocket"></i> HF Space
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="background: rgba(0,0,0,0.2);">
+      <div class="container">
+        <div class="contact-block" data-reveal>
+          <h2 class="section-title" style="margin-bottom: 8px;">Start a Pilot Program</h2>
+          <p class="section-sub" style="margin-bottom: 24px;">For partnerships, pilots, and demos, get in touch.</p>
+          <a class="cta" href="mailto:cheriftasantixat@gmail.com">
+            <i class="fas fa-envelope"></i> Email Us
+          </a>
+          <div class="links" style="justify-content: center; margin-top: 24px;">
+            <a href="https://dibvsdms.vercel.app/" target="_blank" rel="noopener">
+              <i class="fas fa-external-link-alt"></i> ENSTP Guidance Demo
+            </a>
+            <a href="https://huggingface.co/spaces/cheriftassii/enstp-academic-advisor" target="_blank" rel="noopener">
+              <i class="fas fa-rocket"></i> RAG Advisor (HF Space)
+            </a>
+            <a href="https://huggingface.co/spaces/cheriftassii/enstp-ai-advisor" target="_blank" rel="noopener">
+              <i class="fas fa-flask"></i> Fine‑tuned Model (Experimental)
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container row">
+      <div>© <span id="year"></span> Dalil Technologies. All rights reserved.</div>
+      <div><small>Made in Algeria • AR/FR/EN</small></div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Intersection Observer for reveal animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+    
+    // Observe all elements with data-reveal attribute
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      observer.observe(el);
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          window.scrollTo({
+            top: target.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+    
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const nav = document.querySelector('.nav');
+      if (window.scrollY > 50) {
+        nav.style.background = 'rgba(17, 19, 23, 0.9)';
+        nav.style.backdropFilter = 'saturate(180%) blur(20px)';
+      } else {
+        nav.style.background = 'rgba(17, 19, 23, 0.5)';
+        nav.style.backdropFilter = 'saturate(180%) blur(10px)';
+      }
+    });
+  </script>
+</body>
+</html>
